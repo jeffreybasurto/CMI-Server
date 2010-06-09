@@ -1,0 +1,2 @@
+--- # Add to this for valid packet types for the error checker.
+chat: [channel, sender, text]
