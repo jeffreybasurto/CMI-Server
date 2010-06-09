@@ -23,6 +23,11 @@ class Packet
     Packet.new({"type"=>"error", "text"=>txt, "from"=>"server"})
   end
 
+  # to access the packet type.
+  def type
+    @data["type"]
+  end
+
 
   # is this packet valid?
   def is_invalid?
