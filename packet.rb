@@ -15,7 +15,7 @@ class Packet
   end
 
   def self.error txt
-    Packet.new({"type"=>"error", "text"=>txt})
+    Packet.new({"type"=>"error", "text"=>txt, "from"=>"server"})
   end
 
   # is this packet valid?
