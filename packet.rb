@@ -50,12 +50,13 @@ class Packet
   def execute socket
     case @data["type"]
       when "chat"
+        log :info, "type: " + @data["sender"] +"@"+ @data["mud"] + "" @data["text"]
         MudConnection.connections.each do |socket|
           socket.send_data self.to_s
         end
       when "login"    
         socket.validated, socket.mud = true, @data["mud"] 
-
+        log :info, "login: " + @data["mud"]
         MudConnection.connections.each do |socket|
           socket.send_data Packet.notify("login", @data["mud"]).to_s
         end
