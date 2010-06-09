@@ -19,8 +19,10 @@ module MudConnection
     # Probably a delimiter but maybe just using the first 4 bytes for string length each time.
     packet = Packet.new(incoming_data)
 
-    unless packet.is_valid?
-      error = Packet.new ({"type"=>"error", "text"=>"#{incoming_data} was not valid."})
+    error = packet.is_invalid?
+    
+    # if there was an error then let's act upon it.
+    if error
       send_data error.to_s
       log :info, "Packet from #{@addr} failed: #{incoming_data}"
       close_connection true
