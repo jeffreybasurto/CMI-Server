@@ -1,7 +1,16 @@
+Requires the eventmachine gem.
+$ sudo gem install eventmachine
 
 To start it up:
+$ ruby server.rb 
 
-ruby server.rb 
+
+CMI protcol relies on YAML (or JSON) to send defined packets.   The goal of
+CMI is to provide a very simple and easy to maintain framework as well as
+very a simple let of packet definitions to work with.   This means that it
+will primarily focus on a robust chat protocol and be very conservative in
+regards to additional features.
+
 
 
 
