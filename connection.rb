@@ -3,12 +3,16 @@ require 'socket' # for unpack_sockaddr_in()
 module MudConnection
   @connections = [] # connections to the server.
 
+  attr_accessor :mud, :validated
+
   def self.connections
     @connections
   end
 
   def post_init
     @port, @addr = Socket.unpack_sockaddr_in(get_peername)
+    @mud, @validated = "unknown", false
+
     log :info, "---#{@addr} has connected."
     MudConnection.connections << self
   end
@@ -19,8 +23,12 @@ module MudConnection
     # Probably a delimiter but maybe just using the first 4 bytes for string length each time.
     packet = Packet.new(incoming_data)
 
-    error = packet.is_invalid?
-    
+    if @validated == false && packet.type != "login"
+      error = Packet.error "This mud is not logged in yet."
+    else
+      error = packet.is_invalid?
+    end
+  
     # if there was an error then let's act upon it.
     if error
       send_data error.to_s
@@ -30,7 +38,7 @@ module MudConnection
     end
 
     # it's valid, so let's execute it.
-    packet.execute
+    packet.execute self
   end
 
   def unbind
